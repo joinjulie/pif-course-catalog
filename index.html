@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pay It Forward Learning Center — 2026–2027 Course Catalog Flipbook</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Georgia, 'Times New Roman', serif; background: #0a0a0a; color: #fff; }
+  header { text-align: center; padding: 28px 16px 8px; }
+  header h1 { margin: 0 0 8px; font-size: 32px; line-height: 1.2; }
+  header p { margin: 4px 0; color: #d8d8d8; font-family: Arial, Helvetica, sans-serif; font-size: 16px; }
+  header p strong { color: #ff9a9a; }
+  .book-wrap { perspective: 1600px; max-width: 1140px; margin: 18px auto 0; padding: 0 16px; }
+  .book { display: flex; justify-content: center; gap: 0; background: #111; padding: 18px; border-radius: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+  .book.flip-in { animation: turn .55s ease; }
+  @keyframes turn { from { transform: rotateY(-14deg); opacity: .55; } to { transform: rotateY(0deg); opacity: 1; } }
+  .page { flex: 1 1 0; max-width: 540px; background: #fff; }
+  .page img { display: block; width: 100%; height: auto; }
+  .page.single { max-width: 560px; }
+  .page.blank { background: #1a1a1a; }
+  .controls { display: flex; justify-content: center; align-items: center; gap: 16px; padding: 18px 16px 8px; flex-wrap: wrap; }
+  button { font-family: Arial, Helvetica, sans-serif; font-size: 17px; font-weight: bold; padding: 12px 22px; border: 0; border-radius: 999px; cursor: pointer; background: #c8102e; color: #fff; }
+  button:disabled { background: #555; cursor: default; }
+  #indicator { font-family: Arial, Helvetica, sans-serif; font-size: 16px; min-width: 190px; text-align: center; }
+  .hint { text-align: center; color: #bbb; font-family: Arial, Helvetica, sans-serif; font-size: 14px; padding: 0 16px 14px; }
+  .thumbs { display: flex; gap: 8px; overflow-x: auto; max-width: 1140px; margin: 0 auto; padding: 10px 16px 22px; }
+  .thumbs img { width: 72px; height: auto; cursor: pointer; border: 3px solid transparent; border-radius: 4px; flex: 0 0 auto; background: #fff; }
+  .thumbs img.active { border-color: #c8102e; }
+  footer { text-align: center; color: #bbb; font-family: Arial, Helvetica, sans-serif; font-size: 14px; padding: 0 16px 30px; line-height: 1.6; }
+  footer a { color: #ff9a9a; }
+  @media (max-width: 800px) {
+    header h1 { font-size: 24px; }
+    .page.wide-only { display: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pay It Forward Learning Center<br>2026–2027 Course Catalog</h1>
+  <p><strong>People. Purpose. Possibilities.</strong></p>
+  <p>Flip through all 25 pages — use the arrows, your keyboard, or tap a page below.</p>
+</header>
+
+<div class="book-wrap">
+  <div class="book" id="book">
+    <div class="page" id="pageLeft"><img id="imgLeft" src="pages/page-01.jpg" alt="Catalog page 1"></div>
+    <div class="page wide-only" id="pageRight"><img id="imgRight" src="" alt=""></div>
+  </div>
+</div>
+
+<div class="controls">
+  <button id="prevBtn" type="button">← Previous</button>
+  <div id="indicator">Cover</div>
+  <button id="nextBtn" type="button">Next →</button>
+</div>
+<p class="hint">Tip: on a wide screen you see a two-page spread. On a phone you see one page at a time.</p>
+
+<div class="thumbs" id="thumbs"></div>
+
+<footer>
+  © 2026 PIF Learning Center, LLC. All Rights Reserved.<br>
+  This flipbook page is yours — upload this whole folder to your own website and share the link, with no monthly flipbook subscription.<br>
+  Full catalog: 25 pages, Pay It Forward Learning Center, 2026–2027.
+</footer>
+
+  <script src="data-01.js"></script>
+  <script src="data-02.js"></script>
+  <script src="data-03.js"></script>
+  <script src="data-04.js"></script>
+  <script src="data-05.js"></script>
+  <script src="data-06.js"></script>
+  <script src="data-07.js"></script>
+  <script src="data-08.js"></script>
+  <script src="data-09.js"></script>
+  <script src="data-10.js"></script>
+  <script src="data-11.js"></script>
+  <script src="data-12.js"></script>
+<script>
+  var TOTAL = 25;
+  var current = 0; // 0 = cover, then spread starts 1, 3, 5, ...
+  var book = document.getElementById('book');
+  var imgLeft = document.getElementById('imgLeft');
+  var imgRight = document.getElementById('imgRight');
+  var pageLeft = document.getElementById('pageLeft');
+  var pageRight = document.getElementById('pageRight');
+  var indicator = document.getElementById('indicator');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function src(n) { return window.FLIPBOOK_PAGES[n]; }
+  function isWide() { return window.innerWidth > 800; }
+  function render(animate) {
+    var wide = isWide();
+    pageLeft.classList.remove('single');
+    pageRight.style.display = '';
+    if (current === 0) {
+      pageLeft.classList.add('single');
+      imgLeft.src = src(0); imgLeft.alt = 'Catalog page 1';
+      pageRight.style.display = 'none';
+      indicator.textContent = 'Cover';
+    } else if (wide) {
+      imgLeft.src = src(current); imgLeft.alt = 'Catalog page ' + (current + 1);
+      if (current + 1 < TOTAL) {
+        imgRight.src = src(current + 1); imgRight.alt = 'Catalog page ' + (current + 2);
+        pageRight.style.display = '';
+        indicator.textContent = 'Pages ' + (current + 1) + '–' + (current + 2) + ' of ' + TOTAL;
+      } else {
+        pageRight.style.display = 'none';
+        indicator.textContent = 'Page ' + (current + 1) + ' of ' + TOTAL;
+      }
+    } else {
+      pageLeft.classList.add('single');
+      imgLeft.src = src(current); imgLeft.alt = 'Catalog page ' + (current + 1);
+      pageRight.style.display = 'none';
+      indicator.textContent = 'Page ' + (current + 1) + ' of ' + TOTAL;
+    }
+    prevBtn.disabled = (current === 0);
+    var atEnd = wide ? (current >= TOTAL - 2 && current !== 0) || current === TOTAL - 1 : (current === TOTAL - 1);
+    // In spread mode the last spread starts at 23 (pages 24-25)
+    if (wide && current === 23) atEnd = true;
+    nextBtn.disabled = atEnd;
+    document.querySelectorAll('.thumbs img').forEach(function(t, i) {
+      t.classList.toggle('active', i === current || (wide && i === current + 1));
+    });
+    if (animate) {
+      book.classList.remove('flip-in');
+      void book.offsetWidth;
+      book.classList.add('flip-in');
+    }
+  }
+  function next() {
+    if (current === 0) { current = 1; }
+    else if (isWide()) { if (current < 23) current += 2; }
+    else if (current < TOTAL - 1) { current += 1; }
+    render(true);
+  }
+  function prev() {
+    if (current === 1) { current = 0; }
+    else if (isWide()) { if (current > 1) current -= 2; }
+    else if (current > 0) { current -= 1; }
+    render(true);
+  }
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+  book.addEventListener('click', function(e) {
+    var rect = book.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    if (x > rect.width / 2) next(); else prev();
+  });
+  var thumbs = document.getElementById('thumbs');
+  for (var i = 0; i < TOTAL; i++) {
+    (function(i) {
+      var t = document.createElement('img');
+      t.src = src(i); t.alt = 'Go to page ' + (i + 1);
+      t.addEventListener('click', function() {
+        if (i === 0) current = 0;
+        else if (i % 2 === 1) current = i;
+        else current = i - 1;
+        render(true);
+      });
+      thumbs.appendChild(t);
+    })(i);
+  }
+  window.addEventListener('resize', function() { render(false); });
+  render(false);
+</script>
+</body>
+</html>
